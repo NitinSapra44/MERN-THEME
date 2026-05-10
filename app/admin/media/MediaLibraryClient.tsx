@@ -31,14 +31,24 @@ export default function MediaLibraryClient({ initialFiles }: { initialFiles: any
     const file = e.target.files?.[0];
     if (!file) return;
     setUploading(true);
-    const fd = new FormData();
-    fd.append('file', file);
-    fd.append('type', 'general');
-    await fetch('/api/upload', { method: 'POST', body: fd });
-    await reload();
-    setUploading(false);
-    flash('File uploaded!');
-    e.target.value = '';
+    try {
+      const fd = new FormData();
+      fd.append('file', file);
+      fd.append('type', 'general');
+      const res = await fetch('/api/upload', { method: 'POST', body: fd });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        flash(`Upload failed: ${err.error || res.statusText}`);
+        return;
+      }
+      await reload();
+      flash('File uploaded!');
+    } catch (err: any) {
+      flash(`Upload error: ${err.message}`);
+    } finally {
+      setUploading(false);
+      e.target.value = '';
+    }
   }
 
   async function handleDelete(f: any) {
