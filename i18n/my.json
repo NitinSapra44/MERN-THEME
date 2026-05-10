@@ -1,0 +1,34 @@
+{
+  "nav": {
+    "home": "Laman Utama",
+    "download": "Muat Turun",
+    "blogs": "Blog",
+    "about": "Tentang Kami",
+    "contact": "Hubungi Kami"
+  },
+  "footer": {
+    "privacy": "Dasar Privasi",
+    "dmca": "DMCA",
+    "copyright": "Hak cipta terpelihara"
+  },
+  "blog": {
+    "readMore": "Baca Lagi",
+    "publishedOn": "Diterbitkan pada",
+    "latestBlogs": "Blog Terkini",
+    "noBlogs": "Tiada blog dijumpai"
+  },
+  "contact": {
+    "name": "Nama",
+    "email": "E-mel",
+    "message": "Mesej",
+    "send": "Hantar Mesej",
+    "success": "Mesej berjaya dihantar!",
+    "error": "Sesuatu telah berlaku. Sila cuba lagi."
+  },
+  "common": {
+    "loading": "Memuatkan...",
+    "notFound": "Halaman tidak dijumpai",
+    "backHome": "Kembali ke Laman Utama",
+    "learnMore": "Ketahui Lebih Lanjut"
+  }
+}

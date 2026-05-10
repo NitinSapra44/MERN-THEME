@@ -1,0 +1,34 @@
+{
+  "nav": {
+    "home": "Home",
+    "download": "I-download",
+    "blogs": "Mga Blog",
+    "about": "Tungkol sa Amin",
+    "contact": "Makipag-ugnayan"
+  },
+  "footer": {
+    "privacy": "Patakaran sa Privacy",
+    "dmca": "DMCA",
+    "copyright": "Lahat ng karapatan ay nakalaan"
+  },
+  "blog": {
+    "readMore": "Magbasa pa",
+    "publishedOn": "Inilathala noong",
+    "latestBlogs": "Pinakabagong Blogs",
+    "noBlogs": "Walang blog na natagpuan"
+  },
+  "contact": {
+    "name": "Pangalan",
+    "email": "Email",
+    "message": "Mensahe",
+    "send": "Magpadala ng Mensahe",
+    "success": "Matagumpay na naipadala ang mensahe!",
+    "error": "May nangyaring mali. Pakisubukang muli."
+  },
+  "common": {
+    "loading": "Naglo-load...",
+    "notFound": "Hindi nahanap ang pahina",
+    "backHome": "Bumalik sa Home",
+    "learnMore": "Matuto Pa"
+  }
+}

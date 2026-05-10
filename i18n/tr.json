@@ -1,0 +1,34 @@
+{
+  "nav": {
+    "home": "Ana Sayfa",
+    "download": "İndir",
+    "blogs": "Bloglar",
+    "about": "Hakkımızda",
+    "contact": "İletişim"
+  },
+  "footer": {
+    "privacy": "Gizlilik Politikası",
+    "dmca": "DMCA",
+    "copyright": "Tüm hakları saklıdır"
+  },
+  "blog": {
+    "readMore": "Devamını oku",
+    "publishedOn": "Yayınlanma tarihi",
+    "latestBlogs": "Son Bloglar",
+    "noBlogs": "Blog bulunamadı"
+  },
+  "contact": {
+    "name": "Ad",
+    "email": "E-posta",
+    "message": "Mesaj",
+    "send": "Mesaj Gönder",
+    "success": "Mesaj başarıyla gönderildi!",
+    "error": "Bir şeyler ters gitti. Lütfen tekrar deneyin."
+  },
+  "common": {
+    "loading": "Yükleniyor...",
+    "notFound": "Sayfa bulunamadı",
+    "backHome": "Ana Sayfaya Dön",
+    "learnMore": "Daha fazla öğren"
+  }
+}

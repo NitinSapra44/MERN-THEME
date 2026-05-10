@@ -1,0 +1,34 @@
+{
+  "nav": {
+    "home": "Home",
+    "download": "Scarica",
+    "blogs": "Blog",
+    "about": "Chi siamo",
+    "contact": "Contatti"
+  },
+  "footer": {
+    "privacy": "Informativa sulla privacy",
+    "dmca": "DMCA",
+    "copyright": "Tutti i diritti riservati"
+  },
+  "blog": {
+    "readMore": "Leggi di più",
+    "publishedOn": "Pubblicato il",
+    "latestBlogs": "Ultimi blog",
+    "noBlogs": "Nessun blog trovato"
+  },
+  "contact": {
+    "name": "Nome",
+    "email": "E-mail",
+    "message": "Messaggio",
+    "send": "Invia messaggio",
+    "success": "Messaggio inviato con successo!",
+    "error": "Qualcosa è andato storto. Riprova."
+  },
+  "common": {
+    "loading": "Caricamento...",
+    "notFound": "Pagina non trovata",
+    "backHome": "Torna alla home",
+    "learnMore": "Scopri di più"
+  }
+}

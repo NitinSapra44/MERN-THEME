@@ -1,0 +1,34 @@
+{
+  "nav": {
+    "home": "Trang chủ",
+    "download": "Tải xuống",
+    "blogs": "Blog",
+    "about": "Giới thiệu",
+    "contact": "Liên hệ"
+  },
+  "footer": {
+    "privacy": "Chính sách bảo mật",
+    "dmca": "DMCA",
+    "copyright": "Đã đăng ký bản quyền"
+  },
+  "blog": {
+    "readMore": "Đọc thêm",
+    "publishedOn": "Đăng ngày",
+    "latestBlogs": "Blog mới nhất",
+    "noBlogs": "Không tìm thấy bài viết"
+  },
+  "contact": {
+    "name": "Tên",
+    "email": "Email",
+    "message": "Tin nhắn",
+    "send": "Gửi tin nhắn",
+    "success": "Tin nhắn đã được gửi thành công!",
+    "error": "Đã xảy ra lỗi. Vui lòng thử lại."
+  },
+  "common": {
+    "loading": "Đang tải...",
+    "notFound": "Không tìm thấy trang",
+    "backHome": "Quay lại trang chủ",
+    "learnMore": "Tìm hiểu thêm"
+  }
+}
