@@ -5,8 +5,12 @@ import { locales } from '@/lib/i18n/routing';
 import ActiveNavLink from './ActiveNavLink';
 import db from '@/lib/db';
 
+function logoSrc(logo: string) {
+  return logo.startsWith('http') ? logo : `/uploads/logos/${logo}`;
+}
+
 export default async function SiteNavbar({ locale }: { locale: string }) {
-  const { settings, site } = await getSiteSettings();
+  const { settings, site, enabledLocales } = await getSiteSettings();
   const prefix = locale === 'en' ? '' : `/${locale}`;
 
   let navLinks: Array<{ href: string; label: string; target?: string }> = [];
@@ -35,7 +39,7 @@ export default async function SiteNavbar({ locale }: { locale: string }) {
           {/* ── Logo ── */}
           <Link href={`${prefix}/`} className="nav-logo" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none', marginRight: 40, flexShrink: 0 }}>
             {settings?.logo ? (
-              <img src={`/uploads/logos/${settings.logo}`} alt={settings?.website_name ?? 'Site'} style={{ height: 36, width: 'auto' }} />
+              <img src={logoSrc(settings.logo)} alt={settings?.website_name ?? 'Site'} style={{ height: 36, width: 'auto' }} />
             ) : (
               <>
                 <div style={{ width: 36, height: 36, borderRadius: 10, background: 'linear-gradient(135deg, #6366f1 0%, #a78bfa 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 17, fontWeight: 900, color: '#fff', flexShrink: 0, boxShadow: '0 0 18px rgba(99,102,241,0.5)' }}>
@@ -59,7 +63,7 @@ export default async function SiteNavbar({ locale }: { locale: string }) {
 
           {/* ── Right side ── */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            <LanguageSwitcher currentLocale={locale} availableLocales={[...locales]} />
+            <LanguageSwitcher currentLocale={locale} availableLocales={enabledLocales} />
             <Link href={`${prefix}/download`} className="nav-download-btn" style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '9px 20px', borderRadius: 10, background: 'linear-gradient(135deg, #6366f1, #8b5cf6)', color: '#fff', textDecoration: 'none', fontSize: 14, fontWeight: 700, whiteSpace: 'nowrap', letterSpacing: '-0.01em' }}>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
               Download

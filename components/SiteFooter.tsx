@@ -21,6 +21,10 @@ function SocialIcon({ platform, url }: { platform: string; url: string }) {
   );
 }
 
+function logoSrc(logo: string) {
+  return logo.startsWith('http') ? logo : `/uploads/logos/${logo}`;
+}
+
 export default async function SiteFooter({ locale }: { locale: string }) {
   const { settings, site, links } = await getSiteSettings();
   const footerBg = site?.footer_bg_color || '#060615';
@@ -50,7 +54,7 @@ export default async function SiteFooter({ locale }: { locale: string }) {
             {/* Brand col */}
             <div>
               {settings?.logo ? (
-                <img src={`/uploads/logos/${settings.logo}`} alt={settings?.website_name ?? 'Site'} style={{ height: 38, width: 'auto', marginBottom: 18 }} />
+                <img src={logoSrc(settings.logo)} alt={settings?.website_name ?? 'Site'} style={{ height: 38, width: 'auto', marginBottom: 18 }} />
               ) : (
                 <div style={{ display: 'flex', alignItems: 'center', gap: 9, marginBottom: 18 }}>
                   <div style={{ width: 36, height: 36, borderRadius: 9, background: 'linear-gradient(135deg, #6366f1, #8b5cf6)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, fontWeight: 800, color: '#fff' }}>

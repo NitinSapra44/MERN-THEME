@@ -1,6 +1,7 @@
 import { getSiteSettings, getPageContent } from '@/lib/getSiteSettings';
 import db from '@/lib/db';
 import DownloadTracker from './DownloadTracker';
+import TimerButton from '@/components/TimerButton';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -65,16 +66,20 @@ export default async function DownloadPage({ params }: { params: Promise<{ local
             </p>
           )}
 
-          {/* Download button */}
-          <div style={{ marginBottom: 32 }}>
+          {/* Download buttons */}
+          <div style={{ marginBottom: 32, display: 'flex', gap: 14, flexWrap: 'wrap', justifyContent: 'center' }}>
+            {/* Primary download tracker button */}
             {latest ? (
-              <DownloadTracker version={latest} btnBg={btnBg} btnText={btnText} btnPt={btnPt} btnPb={btnPb} btnPl={btnPl} btnPr={btnPr} btnFs={btnFs} buttonName={content?.download_button_name || 'Download APK'} />
+              <DownloadTracker version={latest} btnBg={btnBg} btnText={btnText} btnPt={btnPt} btnPb={btnPb} btnPl={btnPl} btnPr={btnPr} btnFs={btnFs} buttonName={content?.download_button_name || 'Download APK'} timerSeconds={content?.download_button_timer || 0} />
             ) : content?.download_button_url ? (
-              <a href={content.download_button_url} style={{ display: 'inline-flex', alignItems: 'center', gap: 10, background: btnBg, color: btnText, padding: `${btnPt}px ${btnPr}px ${btnPb}px ${btnPl}px`, fontSize: btnFs, fontWeight: 700, borderRadius: 12, textDecoration: 'none', boxShadow: `0 0 40px rgba(99,102,241,0.4)` }}>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                {content?.download_button_name || 'Download APK'}
-              </a>
+              <TimerButton href={content.download_button_url} text={content?.download_button_name || 'Download APK'} timerSeconds={content?.download_button_timer || 0} style={{ display: 'inline-flex', alignItems: 'center', gap: 10, background: btnBg, color: btnText, padding: `${btnPt}px ${btnPr}px ${btnPb}px ${btnPl}px`, fontSize: btnFs, fontWeight: 700, borderRadius: 12, textDecoration: 'none', boxShadow: `0 0 40px rgba(99,102,241,0.4)` }} />
             ) : null}
+            {/* Extra download buttons from JSON */}
+            {(content?.download_buttons_parsed || []).map((btn: { text: string; url: string; timer_seconds?: number }, i: number) => (
+              <TimerButton key={i} href={btn.url} text={btn.text} timerSeconds={btn.timer_seconds || 0}
+                style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.15)', color: '#e2e8f0', padding: `${btnPt}px ${btnPr}px ${btnPb}px ${btnPl}px`, fontSize: btnFs, fontWeight: 600, borderRadius: 12, textDecoration: 'none' }}
+              />
+            ))}
           </div>
 
           {/* Version badges */}

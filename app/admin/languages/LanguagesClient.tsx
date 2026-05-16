@@ -29,12 +29,18 @@ const LOCALES: { code: string; label: string }[] = [
 
 type Tab = 'homepage' | 'downloads' | 'seo' | 'pages' | 'faqs' | 'features' | 'screenshots';
 
+interface BannerButton { text: string; url: string; timer_seconds: number; }
+
 interface HomepageData {
   banner_title?: string;
   banner_subtitle?: string;
   banner_button_text?: string;
   banner_button_url?: string;
   banner_image?: string;
+  banner_buttons?: string;
+  banner_button_timer?: number;
+  download_buttons?: string;
+  download_button_timer?: number;
   security_info?: string;
   security_icon1?: string; security_icon1_name?: string;
   security_icon2?: string; security_icon2_name?: string;
@@ -250,6 +256,29 @@ export default function LanguagesClient() {
               <ImageUploadField label="Banner Image" value={data.banner_image ?? ''} onChange={(url) => set('banner_image', url)} uploadType="banners" />
 
               <hr style={{ margin: '20px 0', border: 'none', borderTop: '1px solid #e5e7eb' }} />
+              <h3 style={{ marginTop: 0, marginBottom: 4 }}>Banner Buttons</h3>
+              <p style={{ margin: '0 0 12px', fontSize: 13, color: '#6b7280' }}>Add/remove buttons shown on the homepage hero. If empty, the single Button Text/URL above is used.</p>
+              {(() => {
+                let btns: BannerButton[] = [];
+                try { btns = JSON.parse(data.banner_buttons || '[]'); } catch {}
+                const update = (newBtns: BannerButton[]) => set('banner_buttons', JSON.stringify(newBtns));
+                return (
+                  <div>
+                    <button style={addBtnStyle} onClick={() => update([...btns, { text: 'Download Now', url: '/download', timer_seconds: 0 }])}>+ Add Button</button>
+                    {btns.map((btn, i) => (
+                      <div key={i} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr auto auto', gap: 10, alignItems: 'end', marginBottom: 10, padding: 12, border: '1px solid #e5e7eb', borderRadius: 6 }}>
+                        <Field label="Button Text"><input style={inputStyle} value={btn.text} onChange={(e) => { const b = [...btns]; b[i] = { ...b[i], text: e.target.value }; update(b); }} /></Field>
+                        <Field label="Button URL"><input style={inputStyle} value={btn.url} onChange={(e) => { const b = [...btns]; b[i] = { ...b[i], url: e.target.value }; update(b); }} /></Field>
+                        <Field label="Timer (sec)"><input type="number" min={0} style={{ ...inputStyle, width: 80 }} value={btn.timer_seconds} onChange={(e) => { const b = [...btns]; b[i] = { ...b[i], timer_seconds: parseInt(e.target.value) || 0 }; update(b); }} /></Field>
+                        <div><button style={{ ...removeBtnStyle, marginBottom: 0 }} onClick={() => update(btns.filter((_, idx) => idx !== i))}>Remove</button></div>
+                      </div>
+                    ))}
+                    {btns.length === 0 && <p style={{ color: '#9ca3af', fontSize: 13 }}>No extra buttons. Using the single button above.</p>}
+                  </div>
+                );
+              })()}
+
+              <hr style={{ margin: '20px 0', border: 'none', borderTop: '1px solid #e5e7eb' }} />
               <h3 style={{ marginTop: 0, marginBottom: 16 }}>Security Icons</h3>
               <Field label="Security Info Text">
                 <input style={inputStyle} value={data.security_info ?? ''} onChange={(e) => set('security_info', e.target.value)} />
@@ -350,7 +379,32 @@ export default function LanguagesClient() {
                 <Field label="Download Button URL">
                   <input style={inputStyle} value={data.download_button_url ?? ''} onChange={(e) => set('download_button_url', e.target.value)} />
                 </Field>
+                <Field label="Main Button Timer (sec)">
+                  <input type="number" min={0} style={inputStyle} value={data.download_button_timer ?? 0} onChange={(e) => set('download_button_timer', parseInt(e.target.value) || 0)} placeholder="0 = no timer" />
+                </Field>
               </div>
+
+              <h3 style={{ marginTop: 0, marginBottom: 4 }}>Extra Download Buttons</h3>
+              <p style={{ margin: '0 0 12px', fontSize: 13, color: '#6b7280' }}>Additional download buttons shown alongside the main one.</p>
+              {(() => {
+                let btns: BannerButton[] = [];
+                try { btns = JSON.parse(data.download_buttons || '[]'); } catch {}
+                const update = (newBtns: BannerButton[]) => set('download_buttons', JSON.stringify(newBtns));
+                return (
+                  <div style={{ marginBottom: 16 }}>
+                    <button style={addBtnStyle} onClick={() => update([...btns, { text: 'Mirror Download', url: 'https://', timer_seconds: 0 }])}>+ Add Button</button>
+                    {btns.map((btn, i) => (
+                      <div key={i} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr auto auto', gap: 10, alignItems: 'end', marginBottom: 10, padding: 12, border: '1px solid #e5e7eb', borderRadius: 6 }}>
+                        <Field label="Button Text"><input style={inputStyle} value={btn.text} onChange={(e) => { const b = [...btns]; b[i] = { ...b[i], text: e.target.value }; update(b); }} /></Field>
+                        <Field label="Button URL"><input style={inputStyle} value={btn.url} onChange={(e) => { const b = [...btns]; b[i] = { ...b[i], url: e.target.value }; update(b); }} /></Field>
+                        <Field label="Timer (sec)"><input type="number" min={0} style={{ ...inputStyle, width: 80 }} value={btn.timer_seconds} onChange={(e) => { const b = [...btns]; b[i] = { ...b[i], timer_seconds: parseInt(e.target.value) || 0 }; update(b); }} /></Field>
+                        <div><button style={{ ...removeBtnStyle, marginBottom: 0 }} onClick={() => update(btns.filter((_, idx) => idx !== i))}>Remove</button></div>
+                      </div>
+                    ))}
+                  </div>
+                );
+              })()}
+
               <Field label="Download Page Description">
                 <textarea style={{ ...inputStyle, minHeight: 80 }} value={data.download_page_description ?? ''} onChange={(e) => set('download_page_description', e.target.value)} />
               </Field>

@@ -1,5 +1,6 @@
 import { getSiteSettings, getPageContent } from '@/lib/getSiteSettings';
 import FaqAccordion from '@/components/FaqAccordion';
+import TimerButton from '@/components/TimerButton';
 import db from '@/lib/db';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
@@ -104,14 +105,23 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
 
             {/* CTAs */}
             <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap', alignItems: 'center', justifyContent: hasImage ? 'flex-start' : 'center', marginBottom: 40 }}>
-              <a href={`${prefix}/${content?.download_slug || 'download'}`} className="btn-primary" style={{ display: 'inline-flex', alignItems: 'center', gap: 10, background: btnBg, color: btnText, padding: `${btnPt}px ${btnPr}px ${btnPb}px ${btnPl}px`, fontSize: btnFs, fontWeight: 800, borderRadius: 12, textDecoration: 'none', letterSpacing: '-0.01em' }}>
-                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                {content?.banner_button_text || 'Download Free'}
-              </a>
-              <a href={`${prefix}/about`} style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '15px 26px', borderRadius: 12, background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.75)', fontSize: 16, fontWeight: 600, textDecoration: 'none', backdropFilter: 'blur(10px)' }}>
-                Learn More
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-              </a>
+              {/* If banner_buttons JSON array has entries, render those; otherwise fall back to single button */}
+              {(content?.banner_buttons_parsed?.length > 0
+                ? content.banner_buttons_parsed
+                : [{ text: content?.banner_button_text || 'Download Free', url: `${prefix}/${content?.download_slug || 'download'}`, timer_seconds: content?.banner_button_timer || 0 }]
+              ).map((btn: { text: string; url: string; timer_seconds?: number }, i: number) => (
+                <TimerButton
+                  key={i}
+                  href={btn.url || `${prefix}/download`}
+                  text={btn.text || 'Download'}
+                  timerSeconds={btn.timer_seconds || 0}
+                  className={i === 0 ? 'btn-primary' : undefined}
+                  style={i === 0
+                    ? { display: 'inline-flex', alignItems: 'center', gap: 10, background: btnBg, color: btnText, padding: `${btnPt}px ${btnPr}px ${btnPb}px ${btnPl}px`, fontSize: btnFs, fontWeight: 800, borderRadius: 12, textDecoration: 'none', letterSpacing: '-0.01em' }
+                    : { display: 'inline-flex', alignItems: 'center', gap: 7, padding: '15px 26px', borderRadius: 12, background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.75)', fontSize: 16, fontWeight: 600, textDecoration: 'none', backdropFilter: 'blur(10px)' }
+                  }
+                />
+              ))}
             </div>
 
             {/* Trust / stats row */}
@@ -280,7 +290,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       {/* ════════════════════════════════════════════
           FAQs
       ════════════════════════════════════════════ */}
-      <FaqAccordion faqs={faqs} css={css} />
+      <FaqAccordion faqs={faqs} css={css} title={content?.faqs_title} />
 
       {/* ════════════════════════════════════════════
           GLOBAL STYLES

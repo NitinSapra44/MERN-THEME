@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 interface FaqItem { question: string; answer: string; }
 
-export default function FaqAccordion({ faqs, css }: { faqs: FaqItem[]; css: Record<string, string | number> }) {
+export default function FaqAccordion({ faqs, css, title }: { faqs: FaqItem[]; css: Record<string, string | number>; title?: string }) {
   const [open, setOpen] = useState<number | null>(0);
 
   const bgColor      = (css?.faq_bg_color      as string) || '#0d0d24';
@@ -22,7 +22,7 @@ export default function FaqAccordion({ faqs, css }: { faqs: FaqItem[]; css: Reco
       <div style={{ maxWidth: 820, margin: '0 auto' }}>
         <div style={{ textAlign: 'center', marginBottom: 52 }}>
           <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#6366f1', display: 'block', marginBottom: 12 }}>Got Questions?</span>
-          <h2 style={{ margin: 0, fontSize: headingSize, color: '#f1f5f9', fontWeight: 800, letterSpacing: '-0.02em' }}>Frequently Asked Questions</h2>
+          <h2 style={{ margin: 0, fontSize: headingSize, color: '#f1f5f9', fontWeight: 800, letterSpacing: '-0.02em' }}>{title || 'Frequently Asked Questions'}</h2>
           <div style={{ width: 48, height: 3, background: `linear-gradient(90deg, ${headingBarBg}, #8b5cf6)`, borderRadius: 2, margin: '18px auto 0' }} />
         </div>
 

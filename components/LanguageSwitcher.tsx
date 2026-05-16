@@ -1,9 +1,9 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { useRouter, usePathname } from 'next/navigation';
+import { useRouter, usePathname } from '@/lib/i18n/navigation';
 
-const LOCALES: Record<string, string> = {
+const LOCALE_LABELS: Record<string, string> = {
   en: 'English', ur: 'Urdu', ar: 'Arabic', fr: 'French', es: 'Spanish',
   de: 'German', it: 'Italian', ru: 'Russian', vn: 'Vietnamese', bd: 'Bangladeshi',
   in: 'Hindi', id: 'Indonesian', jp: 'Japanese', my: 'Malay', br: 'Portuguese',
@@ -29,13 +29,7 @@ export default function LanguageSwitcher({ currentLocale, availableLocales }: {
 
   function switchLocale(locale: string) {
     setOpen(false);
-    // Strip current locale prefix if present
-    const segments = pathname.split('/');
-    const knownLocales = Object.keys(LOCALES);
-    const hasLocalePrefix = knownLocales.includes(segments[1]);
-    const pathWithoutLocale = hasLocalePrefix ? '/' + segments.slice(2).join('/') : pathname;
-    const newPath = locale === 'en' ? pathWithoutLocale || '/' : `/${locale}${pathWithoutLocale}`;
-    router.push(newPath);
+    router.replace(pathname, { locale });
   }
 
   return (
@@ -48,7 +42,7 @@ export default function LanguageSwitcher({ currentLocale, availableLocales }: {
           fontSize: 14, display: 'flex', alignItems: 'center', gap: 6, whiteSpace: 'nowrap',
         }}
       >
-        {LOCALES[currentLocale] ?? 'English'} <span style={{ fontSize: 10 }}>▾</span>
+        {LOCALE_LABELS[currentLocale] ?? 'English'} <span style={{ fontSize: 10 }}>▾</span>
       </button>
       {open && (
         <div style={{
@@ -70,7 +64,7 @@ export default function LanguageSwitcher({ currentLocale, availableLocales }: {
               onMouseEnter={(e) => (e.currentTarget.style.background = '#2a2a2a')}
               onMouseLeave={(e) => (e.currentTarget.style.background = loc === currentLocale ? '#333' : 'transparent')}
             >
-              {LOCALES[loc] ?? loc}
+              {LOCALE_LABELS[loc] ?? loc}
             </button>
           ))}
         </div>

@@ -10,12 +10,12 @@ export async function PUT(request: NextRequest) {
   const body = await request.json();
   const { website_name, banner_type, page_settings, languages, logo,
           google_analytics, google_adsense, google_search_console,
-          header_bg_color, footer_bg_color, text_color } = body;
+          header_bg_color, footer_bg_color, text_color, enabled_locales } = body;
 
   await Promise.all([
     db.query(
-      'UPDATE homepage_settings SET website_name=$1, banner_type=$2, page_settings=$3, languages=$4, logo=$5 WHERE id=1',
-      [website_name, banner_type, JSON.stringify(page_settings ?? {}), languages ?? 'en', logo ?? '']
+      'UPDATE homepage_settings SET website_name=$1, banner_type=$2, page_settings=$3, languages=$4, logo=$5, enabled_locales=$6 WHERE id=1',
+      [website_name, banner_type, JSON.stringify(page_settings ?? {}), languages ?? 'en', logo ?? '', enabled_locales ?? 'en']
     ),
     db.query(
       `UPDATE site_settings SET

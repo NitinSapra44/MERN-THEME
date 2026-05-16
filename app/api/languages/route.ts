@@ -37,6 +37,7 @@ export async function PUT(request: NextRequest) {
     'about_title', 'about_description', 'about_meta_title', 'about_meta_description',
     'contact_title', 'contact_description', 'contact_meta_title', 'contact_meta_description',
     'privacy_title', 'privacy_content', 'dmca_title', 'dmca_content',
+    'banner_buttons', 'banner_button_timer', 'download_buttons', 'download_button_timer',
   ];
 
   const keys = Object.keys(body).filter((k) => allowed.includes(k));

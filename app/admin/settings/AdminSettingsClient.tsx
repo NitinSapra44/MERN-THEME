@@ -39,7 +39,20 @@ const textarea: React.CSSProperties = {
   ...input, resize: 'vertical', fontFamily: 'monospace', fontSize: 12,
 };
 
+const ALL_LOCALES = [
+  { code: 'en', label: 'English' }, { code: 'ur', label: 'Urdu' }, { code: 'ar', label: 'Arabic' },
+  { code: 'fr', label: 'French' }, { code: 'es', label: 'Spanish' }, { code: 'de', label: 'German' },
+  { code: 'it', label: 'Italian' }, { code: 'ru', label: 'Russian' }, { code: 'vn', label: 'Vietnamese' },
+  { code: 'bd', label: 'Bangladeshi' }, { code: 'in', label: 'Hindi' }, { code: 'id', label: 'Indonesian' },
+  { code: 'jp', label: 'Japanese' }, { code: 'my', label: 'Malay' }, { code: 'br', label: 'Portuguese' },
+  { code: 'te', label: 'Telugu' }, { code: 'ta', label: 'Tamil' }, { code: 'th', label: 'Thai' },
+  { code: 'tr', label: 'Turkish' }, { code: 'ph', label: 'Filipino' }, { code: 'pa', label: 'Punjabi' },
+];
+
 export default function AdminSettingsClient({ settings, siteSettings }: Props) {
+  const initEnabled = (settings?.enabled_locales ?? 'en,ur,ar,fr,es,de,it,ru,vn,bd,in,id,jp,my,br,te,ta,th,tr,ph,pa')
+    .split(',').map((s: string) => s.trim()).filter(Boolean);
+
   const [form, setForm] = useState({
     website_name:         settings?.website_name ?? '',
     banner_type:          settings?.banner_type ?? 'image',
@@ -51,9 +64,19 @@ export default function AdminSettingsClient({ settings, siteSettings }: Props) {
     text_color:           siteSettings?.text_color ?? '#e2e8f0',
     show_blogs:           siteSettings?.show_blogs ?? 1,
   });
+  const [enabledLocales, setEnabledLocales] = useState<string[]>(initEnabled);
+
+  function toggleLocale(code: string) {
+    if (code === 'en') return; // English always on
+    setEnabledLocales((prev) =>
+      prev.includes(code) ? prev.filter((c) => c !== code) : [...prev, code]
+    );
+  }
   const [logoFile, setLogoFile]       = useState<File | null>(null);
   const [logoPreview, setLogoPreview] = useState<string>(
-    settings?.logo ? `/uploads/logos/${settings.logo}` : ''
+    settings?.logo
+      ? (settings.logo.startsWith('http') ? settings.logo : `/uploads/logos/${settings.logo}`)
+      : ''
   );
   const [saving, setSaving] = useState(false);
   const [saved,  setSaved]  = useState(false);
@@ -80,13 +103,13 @@ export default function AdminSettingsClient({ settings, siteSettings }: Props) {
       fd.append('type', 'logos');
       const res  = await fetch('/api/upload', { method: 'POST', body: fd });
       const data = await res.json();
-      logoFilename = data.filename;
+      logoFilename = data.url ?? data.filename;
     }
 
     await fetch('/api/settings', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...form, logo: logoFilename }),
+      body: JSON.stringify({ ...form, logo: logoFilename, enabled_locales: enabledLocales.join(',') }),
     });
 
     setSaving(false);
@@ -184,6 +207,32 @@ export default function AdminSettingsClient({ settings, siteSettings }: Props) {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+
+        {/* Active Languages */}
+        <div style={card}>
+          <div style={sectionHead}>Active Languages</div>
+          <p style={{ margin: '0 0 16px', fontSize: 13, color: '#64748b' }}>
+            Only checked languages appear in the site language switcher. English is always active.
+          </p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: 10 }}>
+            {ALL_LOCALES.map(({ code, label }) => {
+              const checked = enabledLocales.includes(code);
+              const isEn = code === 'en';
+              return (
+                <label key={code} style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: isEn ? 'default' : 'pointer', opacity: isEn ? 0.6 : 1 }}>
+                  <input
+                    type="checkbox"
+                    checked={checked}
+                    disabled={isEn}
+                    onChange={() => toggleLocale(code)}
+                    style={{ accentColor: '#6366f1', width: 16, height: 16 }}
+                  />
+                  <span style={{ fontSize: 13, color: '#e2e8f0' }}>{label}</span>
+                </label>
+              );
+            })}
           </div>
         </div>
 
