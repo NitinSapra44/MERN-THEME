@@ -1,5 +1,11 @@
 -- Sprint 5 Migration: Fix dark theme colors + ensure admin tables exist
 
+-- Widen color columns that need to store rgba() values (>20 chars)
+ALTER TABLE css_setting ALTER COLUMN featured_icon_bg_color TYPE VARCHAR(60);
+ALTER TABLE css_setting ALTER COLUMN faq_box_bg_color TYPE VARCHAR(60);
+ALTER TABLE css_setting ALTER COLUMN featured_bg_color TYPE VARCHAR(60);
+ALTER TABLE css_setting ALTER COLUMN faq_bg_color TYPE VARCHAR(60);
+
 -- Fix features/FAQ/footer background to dark theme colors
 UPDATE css_setting SET
   featured_bg_color       = '#0b0b20',
