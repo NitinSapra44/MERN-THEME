@@ -1,19 +1,29 @@
 'use client';
 import { useState } from 'react';
 
+function isLightColor(hex: string): boolean {
+  const c = hex.replace('#', '');
+  if (c.length < 6) return false;
+  const r = parseInt(c.slice(0, 2), 16);
+  const g = parseInt(c.slice(2, 4), 16);
+  const b = parseInt(c.slice(4, 6), 16);
+  return (r * 299 + g * 587 + b * 114) / 1000 > 140;
+}
+
 interface FaqItem { question: string; answer: string; }
 
 export default function FaqAccordion({ faqs, css, title }: { faqs: FaqItem[]; css: Record<string, string | number>; title?: string }) {
   const [open, setOpen] = useState<number | null>(0);
 
-  const bgColor      = (css?.faq_bg_color      as string) || '#0d0d24';
-  const headingSize  = (css?.faq_heading_size  as number) || 30;
-  const headingBarBg = (css?.faq_heading_color as string) || '#6366f1';
-  const boxBg        = (css?.faq_box_bg_color  as string) || 'rgba(255,255,255,0.04)';
-  const titleSize    = (css?.faq_title_size    as number) || 16;
-  const titleColor   = (css?.faq_title_color   as string) || '#f1f5f9';
-  const descSize     = (css?.faq_desc_size     as number) || 14;
-  const descColor    = (css?.faq_desc_color    as string) || '#94a3b8';
+  const bgColor        = (css?.faq_bg_color      as string) || '#0d0d24';
+  const headingSize    = (css?.faq_heading_size  as number) || 30;
+  const headingBarBg   = (css?.faq_heading_color as string) || '#6366f1';
+  const boxBg          = (css?.faq_box_bg_color  as string) || 'rgba(255,255,255,0.04)';
+  const titleSize      = (css?.faq_title_size    as number) || 16;
+  const titleColor     = (css?.faq_title_color   as string) || '#f1f5f9';
+  const descSize       = (css?.faq_desc_size     as number) || 14;
+  const descColor      = (css?.faq_desc_color    as string) || '#94a3b8';
+  const headingTextColor = isLightColor(bgColor) ? '#0f172a' : '#f1f5f9';
 
   if (!faqs.length) return null;
 
@@ -21,8 +31,8 @@ export default function FaqAccordion({ faqs, css, title }: { faqs: FaqItem[]; cs
     <section style={{ background: bgColor, padding: '80px 24px' }}>
       <div style={{ maxWidth: 820, margin: '0 auto' }}>
         <div style={{ textAlign: 'center', marginBottom: 52 }}>
-          <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#6366f1', display: 'block', marginBottom: 12 }}>Got Questions?</span>
-          <h2 style={{ margin: 0, fontSize: headingSize, color: '#f1f5f9', fontWeight: 800, letterSpacing: '-0.02em' }}>{title || 'Frequently Asked Questions'}</h2>
+          <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: headingBarBg, display: 'block', marginBottom: 12 }}>Got Questions?</span>
+          <h2 style={{ margin: 0, fontSize: headingSize, color: headingTextColor, fontWeight: 800, letterSpacing: '-0.02em' }}>{title || 'Frequently Asked Questions'}</h2>
           <div style={{ width: 48, height: 3, background: `linear-gradient(90deg, ${headingBarBg}, #8b5cf6)`, borderRadius: 2, margin: '18px auto 0' }} />
         </div>
 

@@ -45,10 +45,11 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   const homeHeadingColor = css?.home_heading_color || '#111827';
   const homeDescSize     = css?.home_desc_size     ?? 16;
   const homeDescColor    = css?.home_desc_color    || '#4b5563';
-  const featuredBg           = css?.featured_bg_color      || '#0b0b20';
-  const featuredHeadingSize  = css?.featured_heading_size  ?? 32;
-  const featuredIconBg       = css?.featured_icon_bg_color || 'rgba(99,102,241,0.15)';
-  const featuredIconTextSize = css?.featured_icon_text_size ?? 14;
+  const featuredBg            = css?.featured_bg_color       || '#0b0b20';
+  const featuredHeadingSize   = css?.featured_heading_size   ?? 32;
+  const featuredHeadingColor  = css?.featured_heading_color  || '#f1f5f9';
+  const featuredIconBg        = css?.featured_icon_bg_color  || 'rgba(99,102,241,0.15)';
+  const featuredIconTextSize  = css?.featured_icon_text_size ?? 14;
   const bgPadding      = css?.bg_padding      ?? 28;
   const bgHeadingSize  = css?.bg_heading_size  ?? 18;
   const bgHeadingColor = css?.bg_heading_color || '#f1f5f9';
@@ -216,7 +217,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
             {content?.feature_title && (
               <div style={{ textAlign: 'center', marginBottom: 64 }}>
                 <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#818cf8', display: 'block', marginBottom: 14 }}>Why Us</span>
-                <h2 style={{ margin: 0, fontSize: featuredHeadingSize, color: '#f1f5f9', fontWeight: 900, letterSpacing: '-0.025em' }}>{content.feature_title}</h2>
+                <h2 style={{ margin: 0, fontSize: featuredHeadingSize, color: featuredHeadingColor, fontWeight: 900, letterSpacing: '-0.025em' }}>{content.feature_title}</h2>
                 <div style={{ width: 56, height: 3, background: 'linear-gradient(90deg, #6366f1, #a78bfa)', borderRadius: 2, margin: '20px auto 0' }} />
               </div>
             )}
