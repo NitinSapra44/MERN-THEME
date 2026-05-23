@@ -110,6 +110,26 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
               </div>
             )}
 
+            {/* Security badges */}
+            {(content?.security_icon1 || content?.security_icon2 || content?.security_icon3) && (
+              <div style={{ marginBottom: 28 }}>
+                {content?.security_info && <p style={{ fontSize: secSize, color: secColor, fontWeight: 600, margin: '0 0 10px' }}>{content.security_info}</p>}
+                <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', alignItems: 'center', justifyContent: hasImage ? 'flex-start' : 'center' }}>
+                  {[1, 2, 3].map(n => {
+                    const iconSrc = content?.[`security_icon${n}`];
+                    const iconName = content?.[`security_icon${n}_name`];
+                    if (!iconSrc && !iconName) return null;
+                    return (
+                      <div key={n} style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '7px 14px', background: 'rgba(255,255,255,0.06)', borderRadius: 10, border: '1px solid rgba(255,255,255,0.1)' }}>
+                        {iconSrc && <img src={iconSrc} alt={iconName || ''} style={{ height: iconSize * 2, width: iconSize * 2, objectFit: 'contain' }} />}
+                        {iconName && <span style={{ fontSize: iconSize, color: iconColor, fontWeight: 600 }}>{iconName}</span>}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
             {/* CTAs */}
             <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap', alignItems: 'center', justifyContent: hasImage ? 'flex-start' : 'center', marginBottom: 32 }}>
               {/* If banner_buttons JSON array has entries, render those; otherwise fall back to single button */}
@@ -130,26 +150,6 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
                 />
               ))}
             </div>
-
-            {/* Security badges */}
-            {(content?.security_icon1 || content?.security_icon2 || content?.security_icon3) && (
-              <div style={{ marginTop: 8 }}>
-                {content?.security_info && <p style={{ fontSize: secSize, color: secColor, fontWeight: 600, margin: '0 0 10px' }}>{content.security_info}</p>}
-                <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', alignItems: 'center', justifyContent: hasImage ? 'flex-start' : 'center' }}>
-                  {[1, 2, 3].map(n => {
-                    const iconSrc = content?.[`security_icon${n}`];
-                    const iconName = content?.[`security_icon${n}_name`];
-                    if (!iconSrc && !iconName) return null;
-                    return (
-                      <div key={n} style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '7px 14px', background: 'rgba(255,255,255,0.06)', borderRadius: 10, border: '1px solid rgba(255,255,255,0.1)' }}>
-                        {iconSrc && <img src={iconSrc} alt={iconName || ''} style={{ height: iconSize * 2, width: iconSize * 2, objectFit: 'contain' }} />}
-                        {iconName && <span style={{ fontSize: iconSize, color: iconColor, fontWeight: 600 }}>{iconName}</span>}
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
           </div>
 
           {/* ── Right: Mockup ── */}
