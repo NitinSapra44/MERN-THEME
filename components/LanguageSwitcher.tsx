@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { usePathname } from '@/lib/i18n/navigation';
 
 const LOCALE_LABELS: Record<string, string> = {
   en: 'English', ur: 'Urdu', ar: 'Arabic', fr: 'French', es: 'Spanish',
@@ -15,7 +14,6 @@ export default function LanguageSwitcher({ currentLocale, availableLocales }: {
   availableLocales: string[];
 }) {
   const [open, setOpen] = useState(false);
-  const pathname = usePathname();
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -26,12 +24,22 @@ export default function LanguageSwitcher({ currentLocale, availableLocales }: {
     return () => document.removeEventListener('mousedown', handleClick);
   }, []);
 
-  function switchLocale(locale: string) {
+  function switchLocale(newLocale: string) {
     setOpen(false);
-    const cleanPath = pathname || '/';
-    const newUrl = locale === 'en'
+    const currentPath = window.location.pathname;
+
+    // Strip any non-English locale prefix from the current URL
+    let cleanPath = currentPath;
+    for (const loc of availableLocales) {
+      if (loc !== 'en' && (currentPath === `/${loc}` || currentPath.startsWith(`/${loc}/`))) {
+        cleanPath = currentPath.slice(loc.length + 1) || '/';
+        break;
+      }
+    }
+
+    const newUrl = newLocale === 'en'
       ? cleanPath
-      : `/${locale}${cleanPath === '/' ? '' : cleanPath}`;
+      : `/${newLocale}${cleanPath === '/' ? '' : cleanPath}`;
     window.location.href = newUrl;
   }
 
