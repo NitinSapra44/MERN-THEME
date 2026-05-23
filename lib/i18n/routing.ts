@@ -12,4 +12,5 @@ export const routing = defineRouting({
   locales,
   defaultLocale: 'en',
   localePrefix: 'as-needed', // English has no prefix: / , others: /ur/, /ar/
+  localeDetection: false,    // prevent middleware from redirecting based on browser Accept-Language
 });
