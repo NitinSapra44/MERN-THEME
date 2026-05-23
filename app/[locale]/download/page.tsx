@@ -143,14 +143,16 @@ export default async function DownloadPage({ params }: { params: Promise<{ local
       )}
 
       <style>{`
-        .dl-rich h2 { font-size: ${h2GenSize}px; color: #f1f5f9; font-weight: 700; margin: 28px 0 14px; border-bottom: 1px solid rgba(99,102,241,0.2); padding-bottom: 10px; }
-        .dl-rich h3 { font-size: ${h3Size}px; color: ${h3Color}; margin: 20px 0 10px; font-weight: 600; }
-        .dl-rich p { margin: 0 0 16px; }
+        .dl-rich * { color: inherit !important; }
+        .dl-rich h2 { font-size: ${h2GenSize}px; color: #f1f5f9 !important; font-weight: 700; margin: 28px 0 14px; border-bottom: 1px solid rgba(99,102,241,0.2); padding-bottom: 10px; }
+        .dl-rich h3 { font-size: ${h3Size}px; color: ${h3Color} !important; margin: 20px 0 10px; font-weight: 600; }
+        .dl-rich p { margin: 0 0 16px; color: ${textColor} !important; }
         .dl-rich ul, .dl-rich ol { padding-left: 24px; margin: 10px 0 18px; }
-        .dl-rich li { margin-bottom: 8px; line-height: 1.75; }
+        .dl-rich li { margin-bottom: 8px; line-height: 1.75; color: ${textColor} !important; }
         .dl-rich li::marker { color: #6366f1; }
-        .dl-rich a { color: #818cf8; }
-        .dl-rich strong { color: #e2e8f0; }
+        .dl-rich a { color: #818cf8 !important; }
+        .dl-rich strong, .dl-rich b { color: #e2e8f0 !important; }
+        .dl-rich span { color: inherit !important; }
       `}</style>
     </div>
   );

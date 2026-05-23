@@ -84,28 +84,34 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           {/* ── Left: Text ── */}
           <div className={hasImage ? '' : 'hero-center'} style={{ textAlign: hasImage ? 'left' : 'center' }}>
 
-            {/* Eyebrow badge */}
-            <div className={hasImage ? '' : 'hero-center-flex'} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 28 }}>
-              <div className="eyebrow-badge" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '6px 16px', borderRadius: 100, background: 'rgba(99,102,241,0.12)', border: '1px solid rgba(99,102,241,0.35)', backdropFilter: 'blur(10px)' }}>
-                <span className="badge-dot" style={{ width: 7, height: 7, borderRadius: '50%', background: '#6366f1', display: 'inline-block' }} />
-                <span style={{ fontSize: 12, fontWeight: 700, color: '#a5b4fc', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-                  {settings?.website_name || 'Official App'} — Free Download
-                </span>
-              </div>
-            </div>
-
             {/* H1 */}
             <h1 className="hero-h1" style={{ fontSize: h1Size, margin: '0 0 22px', fontWeight: 900, lineHeight: 1.08, letterSpacing: '-0.03em', maxWidth: 640 }}>
               <span className="gradient-text">{content?.banner_title || settings?.website_name || 'Download Any Video, Instantly'}</span>
             </h1>
 
             {/* Subtitle */}
-            <p style={{ fontSize: 19, color: 'rgba(255,255,255,0.58)', margin: '0 0 44px', lineHeight: 1.65, maxWidth: 520 }}>
+            <p style={{ fontSize: 19, color: 'rgba(255,255,255,0.58)', margin: '0 0 28px', lineHeight: 1.65, maxWidth: 520 }}>
               {content?.banner_subtitle}
             </p>
 
+            {/* Trust / stats row — above the button */}
+            {totalDownloads > 0 && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 28, justifyContent: hasImage ? 'flex-start' : 'center' }}>
+                <div style={{ display: 'flex' }}>
+                  {['👤','👤','👤'].map((e, i) => (
+                    <div key={i} style={{ width: 28, height: 28, borderRadius: '50%', background: `hsl(${240 + i * 20}, 70%, 55%)`, border: '2px solid #07071a', marginLeft: i > 0 ? -8 : 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12 }}>{e}</div>
+                  ))}
+                </div>
+                <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.55)' }}>
+                  <strong style={{ color: '#a5b4fc' }}>{totalDownloads.toLocaleString()}+</strong> downloads
+                </span>
+                <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.2)' }}>·</span>
+                <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.55)' }}>⭐ Free & Safe</span>
+              </div>
+            )}
+
             {/* CTAs */}
-            <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap', alignItems: 'center', justifyContent: hasImage ? 'flex-start' : 'center', marginBottom: 40 }}>
+            <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap', alignItems: 'center', justifyContent: hasImage ? 'flex-start' : 'center', marginBottom: 32 }}>
               {/* If banner_buttons JSON array has entries, render those; otherwise fall back to single button */}
               {(content?.banner_buttons_parsed?.length > 0
                 ? content.banner_buttons_parsed
@@ -124,22 +130,6 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
                 />
               ))}
             </div>
-
-            {/* Trust / stats row */}
-            {totalDownloads > 0 && (
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 28, justifyContent: hasImage ? 'flex-start' : 'center' }}>
-                <div style={{ display: 'flex' }}>
-                  {['👤','👤','👤'].map((e, i) => (
-                    <div key={i} style={{ width: 28, height: 28, borderRadius: '50%', background: `hsl(${240 + i * 20}, 70%, 55%)`, border: '2px solid #07071a', marginLeft: i > 0 ? -8 : 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12 }}>{e}</div>
-                  ))}
-                </div>
-                <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.55)' }}>
-                  <strong style={{ color: '#a5b4fc' }}>{totalDownloads.toLocaleString()}+</strong> downloads
-                </span>
-                <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.2)' }}>·</span>
-                <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.55)' }}>⭐ Free & Safe</span>
-              </div>
-            )}
 
             {/* Security badges */}
             {(content?.security_icon1 || content?.security_icon2 || content?.security_icon3) && (
@@ -192,8 +182,8 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           INTRO
       ════════════════════════════════════════════ */}
       {(content?.intro_title || content?.intro_description) && (
-        <section style={{ background: '#ffffff', padding: '80px 28px' }}>
-          <div style={{ maxWidth: 900, margin: '0 auto' }}>
+        <section style={{ background: '#ffffff', padding: '56px 28px' }}>
+          <div style={{ maxWidth: 1200, margin: '0 auto' }}>
             {content?.intro_title && (
               <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 28 }}>
                 <div style={{ width: 4, height: 42, background: 'linear-gradient(180deg, #6366f1, #8b5cf6)', borderRadius: 2, flexShrink: 0 }} />
@@ -211,12 +201,11 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           FEATURES
       ════════════════════════════════════════════ */}
       {features.length > 0 && (
-        <section style={{ background: featuredBg, padding: '88px 28px', position: 'relative', overflow: 'hidden' }}>
+        <section style={{ background: featuredBg, padding: '56px 28px', position: 'relative', overflow: 'hidden' }}>
           <div style={{ position: 'absolute', top: '-20%', right: '-10%', width: 500, height: 500, borderRadius: '50%', background: 'radial-gradient(circle, rgba(99,102,241,0.1) 0%, transparent 70%)', pointerEvents: 'none' }} />
           <div style={{ maxWidth: 1200, margin: '0 auto', position: 'relative' }}>
             {content?.feature_title && (
-              <div style={{ textAlign: 'center', marginBottom: 64 }}>
-                <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#818cf8', display: 'block', marginBottom: 14 }}>Why Us</span>
+              <div style={{ textAlign: 'center', marginBottom: 48 }}>
                 <h2 style={{ margin: 0, fontSize: featuredHeadingSize, color: featuredHeadingColor, fontWeight: 900, letterSpacing: '-0.025em' }}>{content.feature_title}</h2>
                 <div style={{ width: 56, height: 3, background: 'linear-gradient(90deg, #6366f1, #a78bfa)', borderRadius: 2, margin: '20px auto 0' }} />
               </div>
@@ -242,9 +231,9 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           SCREENSHOTS
       ════════════════════════════════════════════ */}
       {screenshots.length > 0 && (
-        <section style={{ background: '#07071a', padding: '88px 28px' }}>
+        <section style={{ background: '#07071a', padding: '56px 28px' }}>
           <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-            <div style={{ textAlign: 'center', marginBottom: 60 }}>
+            <div style={{ textAlign: 'center', marginBottom: 48 }}>
               <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#818cf8', display: 'block', marginBottom: 14 }}>Gallery</span>
               <h2 style={{ margin: 0, fontSize: 32, color: '#f1f5f9', fontWeight: 900, letterSpacing: '-0.025em' }}>See It In Action</h2>
               <div style={{ width: 56, height: 3, background: 'linear-gradient(90deg, #6366f1, #a78bfa)', borderRadius: 2, margin: '20px auto 0' }} />
@@ -272,8 +261,8 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           HOME INFO
       ════════════════════════════════════════════ */}
       {(content?.home_info_title || content?.home_info_description) && (
-        <section style={{ background: '#f8f9ff', padding: '88px 28px' }}>
-          <div style={{ maxWidth: 960, margin: '0 auto' }}>
+        <section style={{ background: '#f8f9ff', padding: '56px 28px' }}>
+          <div style={{ maxWidth: 1200, margin: '0 auto' }}>
             {content?.home_info_title && (
               <div style={{ textAlign: 'center', marginBottom: 44 }}>
                 {settings?.article_main_image && <img src={settings.article_main_image} alt={content.home_info_title} style={{ height: 72, width: 'auto', objectFit: 'contain', marginBottom: 20 }} />}
@@ -338,12 +327,14 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         .hero-center-flex { justify-content: center; }
 
         /* Rich content */
-        .rc h2 { font-size: ${h2GenSize}px; color: #0f172a; font-weight: 800; margin: 32px 0 14px; padding-left: 16px; border-left: 4px solid #6366f1; }
-        .rc h3 { font-size: ${css?.h3_size ?? 18}px; color: ${css?.h3_color || '#1e293b'}; margin: 22px 0 10px; font-weight: 700; }
-        .rc p { margin: 0 0 16px; } .rc ul,.rc ol { padding-left: 24px; margin: 10px 0 18px; } .rc li { margin-bottom: 8px; line-height: 1.75; } .rc a { color: #6366f1; }
-        .rcl h2 { font-size: ${h2GenSize}px; color: ${homeHeadingColor}; font-weight: 800; margin: 32px 0 14px; padding: 12px 20px; background: rgba(99,102,241,0.07); border-left: 4px solid #6366f1; border-radius: 0 10px 10px 0; }
-        .rcl h3 { font-size: ${css?.h3_size ?? 18}px; color: #1e293b; margin: 22px 0 10px; font-weight: 700; }
-        .rcl p { margin: 0 0 16px; } .rcl ul,.rcl ol { padding-left: 24px; margin: 10px 0 18px; } .rcl li { margin-bottom: 8px; line-height: 1.75; } .rcl a { color: #6366f1; }
+        .rc * { color: inherit !important; }
+        .rc h2 { font-size: ${h2GenSize}px; color: #0f172a !important; font-weight: 800; margin: 32px 0 14px; padding-left: 16px; border-left: 4px solid #6366f1; }
+        .rc h3 { font-size: ${css?.h3_size ?? 18}px; color: ${css?.h3_color || '#1e293b'} !important; margin: 22px 0 10px; font-weight: 700; }
+        .rc p { margin: 0 0 16px; color: ${textColor} !important; } .rc ul,.rc ol { padding-left: 24px; margin: 10px 0 18px; } .rc li { margin-bottom: 8px; line-height: 1.75; color: ${textColor} !important; } .rc a { color: #6366f1 !important; } .rc strong,.rc b { color: #0f172a !important; }
+        .rcl * { color: inherit !important; }
+        .rcl h2 { font-size: ${h2GenSize}px; color: ${homeHeadingColor} !important; font-weight: 800; margin: 32px 0 14px; padding: 12px 20px; background: rgba(99,102,241,0.07); border-left: 4px solid #6366f1; border-radius: 0 10px 10px 0; }
+        .rcl h3 { font-size: ${css?.h3_size ?? 18}px; color: #1e293b !important; margin: 22px 0 10px; font-weight: 700; }
+        .rcl p { margin: 0 0 16px; color: ${homeDescColor} !important; } .rcl ul,.rcl ol { padding-left: 24px; margin: 10px 0 18px; } .rcl li { margin-bottom: 8px; line-height: 1.75; color: ${homeDescColor} !important; } .rcl a { color: #6366f1 !important; } .rcl strong,.rcl b { color: #111827 !important; }
 
         /* Mobile */
         @media (max-width: 860px) {
