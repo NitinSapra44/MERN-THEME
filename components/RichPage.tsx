@@ -5,10 +5,8 @@ interface Props { title: string; content: string; }
 export default async function RichPage({ title, content }: Props) {
   const { css } = await getSiteSettings();
   const fontSize  = css?.font_size   ?? 16;
-  const textColor = css?.text_color  || '#374151';
   const h2GenSize = css?.h2_general_size ?? 22;
   const h3Size    = css?.h3_size ?? 18;
-  const h3Color   = css?.h3_color || '#1f2937';
 
   return (
     <div style={{ background: '#07071a', minHeight: '80vh' }}>
@@ -27,7 +25,7 @@ export default async function RichPage({ title, content }: Props) {
         <div style={{ maxWidth: 900, margin: '0 auto', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 20, padding: '48px 52px' }}>
           <div
             className="rich-page-content"
-            style={{ fontSize, color: textColor, lineHeight: 1.85 }}
+            style={{ fontSize, lineHeight: 1.85 }}
             dangerouslySetInnerHTML={{ __html: content }}
           />
         </div>
@@ -36,7 +34,7 @@ export default async function RichPage({ title, content }: Props) {
       <style>{`
         .rich-page-content { color: #94a3b8; }
         .rich-page-content h2 { font-size: ${h2GenSize}px; color: #f1f5f9; font-weight: 700; margin: 36px 0 16px; padding-bottom: 12px; border-bottom: 1px solid rgba(99,102,241,0.25); }
-        .rich-page-content h3 { font-size: ${h3Size}px; color: ${h3Color === '#222' ? '#e2e8f0' : h3Color}; margin: 24px 0 10px; font-weight: 600; }
+        .rich-page-content h3 { font-size: ${h3Size}px; color: #e2e8f0; margin: 24px 0 10px; font-weight: 600; }
         .rich-page-content p { margin: 0 0 18px; line-height: 1.85; }
         .rich-page-content ul, .rich-page-content ol { padding-left: 24px; margin: 10px 0 20px; }
         .rich-page-content li { margin-bottom: 8px; line-height: 1.75; }

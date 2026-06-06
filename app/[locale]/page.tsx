@@ -33,9 +33,9 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   const btnPl   = css?.btn_padding_left   ?? 36;
   const btnPr   = css?.btn_padding_right  ?? 36;
   const btnFs   = css?.btn_font_size ?? 17;
-  const secColor  = css?.security_color || 'rgba(255,255,255,0.65)';
+  const secColor  = (css?.security_color && css.security_color !== '#000000') ? css.security_color : '#a5b4fc';
   const secSize   = css?.security_size  ?? 13;
-  const iconColor = css?.icon_color || '#ffffff';
+  const iconColor = (css?.icon_color && css.icon_color !== '#000000') ? css.icon_color : '#ffffff';
   const iconSize  = css?.icon_size  ?? 14;
   const textColor = css?.text_color  || '#374151';
   const fontSize  = css?.font_size   ?? 16;
@@ -57,7 +57,8 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   const bgTextColor    = css?.bg_text_color    || '#94a3b8';
   const h2GenSize = css?.h2_general_size ?? 22;
 
-  const hasImage = !!content?.banner_image;
+  const heroImage = content?.hero_screenshot || content?.banner_image || (screenshots.length > 0 ? screenshots[0].image : null);
+  const hasImage = !!heroImage;
 
   return (
     <div style={{ background: '#07071a', color: '#f1f5f9', fontFamily: 'inherit' }}>
@@ -90,7 +91,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
             </h1>
 
             {/* Subtitle */}
-            <p style={{ fontSize: 19, color: 'rgba(255,255,255,0.58)', margin: '0 0 28px', lineHeight: 1.65, maxWidth: 520 }}>
+            <p style={{ fontSize: 19, color: 'rgba(255,255,255,0.78)', margin: '0 0 28px', lineHeight: 1.65, maxWidth: 520 }}>
               {content?.banner_subtitle}
             </p>
 
@@ -102,11 +103,11 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
                     <div key={i} style={{ width: 28, height: 28, borderRadius: '50%', background: `hsl(${240 + i * 20}, 70%, 55%)`, border: '2px solid #07071a', marginLeft: i > 0 ? -8 : 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12 }}>{e}</div>
                   ))}
                 </div>
-                <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.55)' }}>
+                <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.75)' }}>
                   <strong style={{ color: '#a5b4fc' }}>{totalDownloads.toLocaleString()}+</strong> downloads
                 </span>
-                <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.2)' }}>·</span>
-                <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.55)' }}>⭐ Free & Safe</span>
+                <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.35)' }} aria-hidden="true">·</span>
+                <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.75)' }}>⭐ Free & Safe</span>
               </div>
             )}
 
@@ -157,7 +158,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative' }}>
               <div className="mockup-glow" />
               <div className="mockup-ring" />
-              <img className="mockup-img" src={content.banner_image} alt="App preview" style={{ maxHeight: 540, maxWidth: '100%', objectFit: 'contain', position: 'relative', zIndex: 2 }} />
+              <img className="mockup-img" src={heroImage!} alt={content?.banner_image ? 'App preview' : (screenshots[0]?.heading || 'App screenshot')} fetchPriority="high" decoding="async" style={{ maxHeight: 540, maxWidth: '100%', objectFit: 'contain', position: 'relative', zIndex: 2 }} />
               {/* Floating stat card */}
               <div className="float-card float-card-1" style={{ position: 'absolute', top: '12%', right: '-8%', zIndex: 3 }}>
                 <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#10b981' }} />
@@ -215,7 +216,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
                 <div key={i} className="feature-card" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(99,102,241,0.15)', borderRadius: 18, padding: bgPadding, textAlign: 'center', backdropFilter: 'blur(12px)' }}>
                   <div style={{ width: 64, height: 64, margin: '0 auto 20px', background: featuredIconBg, borderRadius: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid rgba(99,102,241,0.2)' }}>
                     {feat.icon
-                      ? <img src={feat.icon} alt={feat.title} style={{ height: 34, width: 34, objectFit: 'contain' }} />
+                      ? <img src={feat.icon} alt={feat.title} loading="lazy" decoding="async" width={34} height={34} style={{ height: 34, width: 34, objectFit: 'contain' }} />
                       : <span style={{ fontSize: 28 }}>⚡</span>}
                   </div>
                   <h3 style={{ fontSize: bgHeadingSize, color: bgHeadingColor, margin: '0 0 10px', fontWeight: 700, letterSpacing: '-0.01em' }}>{feat.title}</h3>
@@ -243,7 +244,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
                 <div key={i} style={{ background: ss.bg_color || 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 20, overflow: 'hidden' }}>
                   {ss.image && (
                     <div style={{ background: 'rgba(0,0,0,0.3)', display: 'flex', justifyContent: 'center', padding: '28px 24px 0' }}>
-                      <img src={ss.image} alt={ss.heading} style={{ maxHeight: 280, maxWidth: '100%', objectFit: 'contain', filter: 'drop-shadow(0 8px 28px rgba(0,0,0,0.6))' }} />
+                      <img src={ss.image} alt={ss.heading || 'Screenshot'} loading="lazy" decoding="async" style={{ maxHeight: 280, maxWidth: '100%', objectFit: 'contain', filter: 'drop-shadow(0 8px 28px rgba(0,0,0,0.6))' }} />
                     </div>
                   )}
                   <div style={{ padding: 24 }}>

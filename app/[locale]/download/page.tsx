@@ -37,10 +37,10 @@ export default async function DownloadPage({ params }: { params: Promise<{ local
   const btnPr  = css?.btn_padding_right  ?? 36;
   const btnFs  = css?.btn_font_size ?? 18;
   const fontSize  = css?.font_size ?? 16;
-  const textColor = css?.text_color || '#94a3b8';
+  const textColor = '#94a3b8';
   const h2GenSize = css?.h2_general_size ?? 22;
   const h3Size    = css?.h3_size ?? 18;
-  const h3Color   = css?.h3_color || '#e2e8f0';
+  const h3Color   = '#e2e8f0'; // hardcoded: h3_color DB default is #000000 (for light-bg sections)
 
   const badge = (label: string, icon: string) => (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, padding: '16px 24px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 12 }}>
@@ -53,15 +53,22 @@ export default async function DownloadPage({ params }: { params: Promise<{ local
     <div style={{ background: '#07071a', minHeight: '80vh', color: '#f1f5f9' }}>
 
       {/* ── HERO ── */}
-      <section style={{ position: 'relative', overflow: 'hidden', background: 'linear-gradient(135deg, #0a0a22 0%, #0f0b30 60%, #0a0a22 100%)', padding: '80px 24px 72px', textAlign: 'center' }}>
-        <div style={{ position: 'absolute', top: '-20%', left: '50%', transform: 'translateX(-50%)', width: 700, height: 500, borderRadius: '50%', background: 'radial-gradient(circle, rgba(99,102,241,0.2) 0%, transparent 70%)', pointerEvents: 'none' }} />
+      <section style={{ position: 'relative', overflow: 'hidden', padding: '80px 24px 72px', textAlign: 'center' }}>
+        {/* Background — matches homepage hero */}
+        <div style={{ position: 'absolute', inset: 0 }}>
+          <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 80% 60% at 50% -10%, rgba(99,102,241,0.28) 0%, transparent 60%), radial-gradient(ellipse 60% 80% at 100% 50%, rgba(139,92,246,0.18) 0%, transparent 55%), linear-gradient(180deg, #0a0820 0%, #07071a 60%, #050514 100%)' }} />
+          <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(rgba(99,102,241,0.18) 1px, transparent 1px)', backgroundSize: '40px 40px', maskImage: 'radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%)', WebkitMaskImage: 'radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%)' }} />
+          <div className="dl-orb dl-orb1" />
+          <div className="dl-orb dl-orb2" />
+          <div className="dl-orb dl-orb3" />
+        </div>
         <div style={{ position: 'relative', zIndex: 1 }}>
           <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#6366f1', display: 'block', marginBottom: 14 }}>Latest Release</span>
           <h1 style={{ fontSize: 46, color: '#f1f5f9', margin: '0 0 14px', fontWeight: 800, letterSpacing: '-0.025em' }}>
             {content?.download_page_title || 'Download the App'}
           </h1>
           {content?.download_page_description && (
-            <p style={{ fontSize: 18, color: 'rgba(255,255,255,0.6)', margin: '0 auto 36px', maxWidth: 560, lineHeight: 1.65 }}>
+            <p style={{ fontSize: 18, color: 'rgba(255,255,255,0.78)', margin: '0 auto 36px', maxWidth: 560, lineHeight: 1.65 }}>
               {content.download_page_description}
             </p>
           )}
@@ -112,7 +119,7 @@ export default async function DownloadPage({ params }: { params: Promise<{ local
       {/* ── PAGE CONTENT ── */}
       {content?.download_page_content && (
         <section style={{ padding: '48px 24px 0' }}>
-          <div style={{ maxWidth: 860, margin: '0 auto', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 16, padding: '32px' }}>
+          <div style={{ maxWidth: 860, margin: '0 auto', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(99,102,241,0.2)', borderRadius: 16, padding: '32px' }}>
             <div className="dl-rich" style={{ fontSize, color: textColor, lineHeight: 1.85 }} dangerouslySetInnerHTML={{ __html: content.download_page_content }} />
           </div>
         </section>
@@ -153,6 +160,12 @@ export default async function DownloadPage({ params }: { params: Promise<{ local
         .dl-rich a { color: #818cf8 !important; }
         .dl-rich strong, .dl-rich b { color: #e2e8f0 !important; }
         .dl-rich span { color: inherit !important; }
+        /* Animated orbs — same as homepage */
+        .dl-orb { position: absolute; border-radius: 50%; filter: blur(60px); pointer-events: none; }
+        .dl-orb1 { width: 520px; height: 520px; top: -15%; right: -5%; background: radial-gradient(circle, rgba(99,102,241,0.22) 0%, transparent 70%); animation: dlOrbFloat 8s ease-in-out infinite; }
+        .dl-orb2 { width: 400px; height: 400px; bottom: -10%; left: -8%; background: radial-gradient(circle, rgba(139,92,246,0.18) 0%, transparent 70%); animation: dlOrbFloat 10s ease-in-out infinite reverse; }
+        .dl-orb3 { width: 300px; height: 300px; top: 40%; left: 35%; background: radial-gradient(circle, rgba(6,182,212,0.1) 0%, transparent 70%); animation: dlOrbFloat 12s ease-in-out infinite 2s; }
+        @keyframes dlOrbFloat { 0%,100% { transform: translate(0,0) scale(1); } 33% { transform: translate(24px,-18px) scale(1.04); } 66% { transform: translate(-16px,12px) scale(0.97); } }
       `}</style>
     </div>
   );
