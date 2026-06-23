@@ -28,10 +28,9 @@ export default function FaqAccordion({ faqs, css, title }: { faqs: FaqItem[]; cs
   if (!faqs.length) return null;
 
   return (
-    <section style={{ background: bgColor, padding: '80px 24px' }}>
+    <section style={{ background: bgColor, padding: '32px 24px 80px' }}>
       <div style={{ maxWidth: 820, margin: '0 auto' }}>
         <div style={{ textAlign: 'center', marginBottom: 52 }}>
-          <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: headingBarBg, display: 'block', marginBottom: 12 }}>Got Questions?</span>
           <h2 style={{ margin: 0, fontSize: headingSize, color: headingTextColor, fontWeight: 800, letterSpacing: '-0.02em' }}>{title || 'Frequently Asked Questions'}</h2>
           <div style={{ width: 48, height: 3, background: `linear-gradient(90deg, ${headingBarBg}, #8b5cf6)`, borderRadius: 2, margin: '18px auto 0' }} />
         </div>

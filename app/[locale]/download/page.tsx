@@ -53,7 +53,7 @@ export default async function DownloadPage({ params }: { params: Promise<{ local
     <div style={{ background: '#07071a', minHeight: '80vh', color: '#f1f5f9' }}>
 
       {/* ── HERO ── */}
-      <section style={{ position: 'relative', overflow: 'hidden', padding: '80px 24px 72px', textAlign: 'center' }}>
+      <section style={{ position: 'relative', overflow: 'hidden', padding: '32px 24px 72px', textAlign: 'center' }}>
         {/* Background — matches homepage hero */}
         <div style={{ position: 'absolute', inset: 0 }}>
           <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 80% 60% at 50% -10%, rgba(99,102,241,0.28) 0%, transparent 60%), radial-gradient(ellipse 60% 80% at 100% 50%, rgba(139,92,246,0.18) 0%, transparent 55%), linear-gradient(180deg, #0a0820 0%, #07071a 60%, #050514 100%)' }} />
@@ -63,7 +63,6 @@ export default async function DownloadPage({ params }: { params: Promise<{ local
           <div className="dl-orb dl-orb3" />
         </div>
         <div style={{ position: 'relative', zIndex: 1 }}>
-          <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#6366f1', display: 'block', marginBottom: 14 }}>Latest Release</span>
           <h1 style={{ fontSize: 46, color: '#f1f5f9', margin: '0 0 14px', fontWeight: 800, letterSpacing: '-0.025em' }}>
             {content?.download_page_title || 'Download the App'}
           </h1>

@@ -9,6 +9,16 @@ function logoSrc(logo: string) {
   return logo.startsWith('http') ? logo : `/uploads/logos/${logo}`;
 }
 
+// Keep the selected language when following internal nav links: prepend the
+// locale prefix to root-relative paths. External URLs (http…, //…) and paths
+// already carrying the prefix are left untouched.
+function withLocalePrefix(url: string, prefix: string): string {
+  if (!url || !prefix) return url;
+  if (!url.startsWith('/') || url.startsWith('//')) return url;
+  if (url === prefix || url.startsWith(`${prefix}/`)) return url;
+  return `${prefix}${url}`;
+}
+
 export default async function SiteNavbar({ locale }: { locale: string }) {
   const { settings, site, enabledLocales } = await getSiteSettings();
   const prefix = locale === 'en' ? '' : `/${locale}`;
@@ -16,7 +26,7 @@ export default async function SiteNavbar({ locale }: { locale: string }) {
   let navLinks: Array<{ href: string; label: string; target?: string }> = [];
   try {
     const { rows } = await db.query('SELECT label, url, target FROM nav_menu WHERE is_active=1 ORDER BY sort_order');
-    if (rows.length > 0) navLinks = rows.map(r => ({ href: r.url, label: r.label, target: r.target }));
+    if (rows.length > 0) navLinks = rows.map(r => ({ href: withLocalePrefix(r.url, prefix), label: r.label, target: r.target }));
   } catch { /* fallback */ }
 
   if (navLinks.length === 0) {
@@ -53,7 +63,7 @@ export default async function SiteNavbar({ locale }: { locale: string }) {
           </Link>
 
           {/* ── Nav links ── */}
-          <div className="nav-links" style={{ display: 'flex', alignItems: 'center', gap: 2, flex: 1 }}>
+          <div className="nav-links" style={{ display: 'flex', alignItems: 'center', gap: 2, marginLeft: 'auto' }}>
             {navLinks.map(link =>
               link.target === '_blank'
                 ? <Link key={link.href} href={link.href} target="_blank" rel="noopener noreferrer" style={{ padding: '8px 14px', color: 'rgba(255,255,255,0.55)', textDecoration: 'none', fontSize: 14, fontWeight: 500, borderRadius: 8 }}>{link.label}</Link>
@@ -64,10 +74,6 @@ export default async function SiteNavbar({ locale }: { locale: string }) {
           {/* ── Right side ── */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
             <LanguageSwitcher currentLocale={locale} availableLocales={enabledLocales} />
-            <Link href={`${prefix}/download`} className="nav-download-btn" style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '9px 20px', borderRadius: 10, background: 'linear-gradient(135deg, #6366f1, #8b5cf6)', color: '#fff', textDecoration: 'none', fontSize: 14, fontWeight: 700, whiteSpace: 'nowrap', letterSpacing: '-0.01em' }}>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              Download
-            </Link>
           </div>
         </div>
       </nav>
@@ -82,8 +88,6 @@ export default async function SiteNavbar({ locale }: { locale: string }) {
           box-shadow: 0 8px 32px rgba(0,0,0,0.4);
         }
         .nav-logo span { background: linear-gradient(90deg, #fff 60%, #a78bfa 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-        .nav-download-btn { box-shadow: 0 0 24px rgba(99,102,241,0.45), 0 4px 12px rgba(0,0,0,0.3); transition: box-shadow 0.2s, transform 0.15s; }
-        .nav-download-btn:hover { box-shadow: 0 0 40px rgba(99,102,241,0.7), 0 4px 16px rgba(0,0,0,0.4); transform: translateY(-1px); }
         @media (max-width: 768px) { .nav-links { display: none !important; } }
       `}</style>
     </>

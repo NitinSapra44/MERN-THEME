@@ -35,10 +35,21 @@ export const getPageContent = cache(async (locale: string) => {
 
   let content = contentRes.rows[0] ?? null;
 
-  // Fall back to English when this locale has no data yet
-  if (locale !== 'en' && (!content || !content.banner_title)) {
+  // English is the master/fallback language. For any non-English locale, overlay
+  // the locale's filled-in fields on top of the English row so that missing or
+  // empty translations fall back to English instead of rendering blank.
+  if (locale !== 'en') {
     const { rows } = await db.query('SELECT * FROM homepage_english WHERE id=1');
-    content = rows[0] ?? {};
+    const en = rows[0] ?? {};
+    if (!content) {
+      content = en;
+    } else {
+      const merged: Record<string, unknown> = { ...en };
+      for (const [key, value] of Object.entries(content)) {
+        if (value !== null && value !== undefined && value !== '') merged[key] = value;
+      }
+      content = merged;
+    }
   }
 
   content = content ?? {};

@@ -41,7 +41,6 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   const fontSize  = css?.font_size   ?? 16;
   const h1Size    = css?.h1_size     ?? 62;
   const h1Color   = css?.h1_color    || '#ffffff';
-  const homeHeadingSize  = css?.home_heading_size  ?? 36;
   const homeHeadingColor = css?.home_heading_color || '#111827';
   const homeDescSize     = css?.home_desc_size     ?? 16;
   const homeDescColor    = css?.home_desc_color    || '#4b5563';
@@ -66,7 +65,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       {/* ════════════════════════════════════════════
           HERO
       ════════════════════════════════════════════ */}
-      <section className="hero-section" style={{ position: 'relative', overflow: 'hidden', minHeight: '92vh', display: 'flex', alignItems: 'center', padding: '80px 28px' }}>
+      <section className="hero-section" style={{ position: 'relative', overflow: 'hidden', minHeight: '78vh', display: 'flex', alignItems: 'center', padding: '72px 28px' }}>
 
         {/* Background layers */}
         <div className="hero-bg" style={{ position: 'absolute', inset: 0 }}>
@@ -132,7 +131,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
             )}
 
             {/* CTAs */}
-            <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap', alignItems: 'center', justifyContent: hasImage ? 'flex-start' : 'center', marginBottom: 32 }}>
+            <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center', marginBottom: 32 }}>
               {/* If banner_buttons JSON array has entries, render those; otherwise fall back to single button */}
               {(content?.banner_buttons_parsed?.length > 0
                 ? content.banner_buttons_parsed
@@ -159,18 +158,6 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
               <div className="mockup-glow" />
               <div className="mockup-ring" />
               <img className="mockup-img" src={heroImage!} alt={content?.banner_image ? 'App preview' : (screenshots[0]?.heading || 'App screenshot')} fetchPriority="high" decoding="async" style={{ maxHeight: 540, maxWidth: '100%', objectFit: 'contain', position: 'relative', zIndex: 2 }} />
-              {/* Floating stat card */}
-              <div className="float-card float-card-1" style={{ position: 'absolute', top: '12%', right: '-8%', zIndex: 3 }}>
-                <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#10b981' }} />
-                <span style={{ fontSize: 13, fontWeight: 700, color: '#f1f5f9' }}>Free Download</span>
-              </div>
-              <div className="float-card float-card-2" style={{ position: 'absolute', bottom: '18%', left: '-6%', zIndex: 3 }}>
-                <span style={{ fontSize: 18 }}>⬇️</span>
-                <div>
-                  <div style={{ fontSize: 13, fontWeight: 700, color: '#f1f5f9' }}>{totalDownloads > 0 ? `${totalDownloads.toLocaleString()}+` : 'Millions'}</div>
-                  <div style={{ fontSize: 11, color: '#64748b' }}>Downloads</div>
-                </div>
-              </div>
             </div>
           )}
         </div>
@@ -232,13 +219,8 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           SCREENSHOTS
       ════════════════════════════════════════════ */}
       {screenshots.length > 0 && (
-        <section style={{ background: '#07071a', padding: '56px 28px' }}>
+        <section style={{ background: '#07071a', padding: '32px 28px 56px' }}>
           <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-            <div style={{ textAlign: 'center', marginBottom: 48 }}>
-              <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#818cf8', display: 'block', marginBottom: 14 }}>Gallery</span>
-              <h2 style={{ margin: 0, fontSize: 32, color: '#f1f5f9', fontWeight: 900, letterSpacing: '-0.025em' }}>See It In Action</h2>
-              <div style={{ width: 56, height: 3, background: 'linear-gradient(90deg, #6366f1, #a78bfa)', borderRadius: 2, margin: '20px auto 0' }} />
-            </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: 24 }}>
               {screenshots.map((ss, i) => (
                 <div key={i} style={{ background: ss.bg_color || 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 20, overflow: 'hidden' }}>
@@ -264,13 +246,6 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       {(content?.home_info_title || content?.home_info_description) && (
         <section style={{ background: '#f8f9ff', padding: '56px 28px' }}>
           <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-            {content?.home_info_title && (
-              <div style={{ textAlign: 'center', marginBottom: 44 }}>
-                {settings?.article_main_image && <img src={settings.article_main_image} alt={content.home_info_title} style={{ height: 72, width: 'auto', objectFit: 'contain', marginBottom: 20 }} />}
-                <h2 style={{ fontSize: homeHeadingSize, color: homeHeadingColor, margin: 0, fontWeight: 900, letterSpacing: '-0.025em' }}>{content.home_info_title}</h2>
-                <div style={{ width: 56, height: 3, background: 'linear-gradient(90deg, #6366f1, #a78bfa)', borderRadius: 2, margin: '18px auto 0' }} />
-              </div>
-            )}
             {content?.home_info_description && (
               <div className="rcl" style={{ fontSize: homeDescSize, color: homeDescColor, lineHeight: 1.85 }} dangerouslySetInnerHTML={{ __html: content.home_info_description }} />
             )}
@@ -312,13 +287,6 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         .mockup-img { animation: imgFloat 5s ease-in-out infinite; filter: drop-shadow(0 24px 64px rgba(0,0,0,0.7)); }
         @keyframes imgFloat { 0%,100% { transform: translateY(0px); } 50% { transform: translateY(-14px); } }
 
-        /* Floating cards */
-        .float-card { display: flex; align-items: center; gap: 10px; padding: 10px 16px; background: rgba(15,15,40,0.85); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.12); border-radius: 14px; box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
-        .float-card-1 { animation: floatCard1 4s ease-in-out infinite; }
-        .float-card-2 { animation: floatCard2 5s ease-in-out infinite; }
-        @keyframes floatCard1 { 0%,100% { transform: translateY(0) rotate(-1deg); } 50% { transform: translateY(-8px) rotate(0deg); } }
-        @keyframes floatCard2 { 0%,100% { transform: translateY(0) rotate(1deg); } 50% { transform: translateY(-10px) rotate(0deg); } }
-
         /* Feature cards hover */
         .feature-card { transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s; }
         .feature-card:hover { border-color: rgba(99,102,241,0.45); transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.3), 0 0 0 1px rgba(99,102,241,0.2); }
@@ -341,7 +309,6 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         @media (max-width: 860px) {
           .hero-section { min-height: auto !important; padding: 64px 20px 56px !important; }
           .hero-h1 { font-size: 38px !important; }
-          .float-card { display: none !important; }
         }
       `}</style>
     </div>
